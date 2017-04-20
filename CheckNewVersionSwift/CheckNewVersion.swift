@@ -20,16 +20,17 @@ class CheckNewVersion: NSObject {
     }()
     //显示在当前的viewcontroller上
     static func checkNewWithVersion(appId : String, controller: UIViewController) {
-        self.shareSingleOne.checkNewVersionAppID(appId: appId, controller: controller)
+        shareSingleOne.checkNewVersionAppID(appId: appId, controller: controller)
     }
+    //检查版本 返回给用户应用的数据 用户可以自定义弹出提示框
     static func checkNewVersionWithVersion(appID: String, checkNewBlock: @escaping swiftBlock) {
-        self.shareSingleOne.getAppStoreVersion(appID: appID) { (model) in
+        shareSingleOne.getAppStoreVersion(appID: appID) { (model) in
             checkNewBlock(model)
         }
     }
     //检查版本号
    fileprivate func checkNewVersionAppID(appId : String, controller : UIViewController) {
-        self .getAppStoreVersion(appID: appId) { (model) in
+        getAppStoreVersion(appID: appId) { (model) in
              let alertController = UIAlertController.init(title: model.version, message: model.releaseNotes, preferredStyle: .alert)
             let updateAction = UIAlertAction.init(title: "立即升级", style: .default, handler: { (action) in
                 self.updateRightNow(model: model)
@@ -47,7 +48,7 @@ class CheckNewVersion: NSObject {
     }
     //获取appstore版本信息
    fileprivate func getAppStoreVersion(appID: String, success: @escaping swiftBlock) {
-        self.getAppStoreInfo(appId: appID){(resDict) in
+        getAppStoreInfo(appId: appID){(resDict) in
             let resultCount = resDict.object(forKey: "resultCount") as! NSInteger
             if resultCount == 1 {
                 let results = resDict.object(forKey: "results") as! NSArray
@@ -79,7 +80,7 @@ class CheckNewVersion: NSObject {
     //返回是否提示更新
    fileprivate func isEqualUpdate(newVersion: String) -> Bool {
         let ignoreVersion = UserDefaults.standard.object(forKey: "ingoreVersion") as? String
-        let versionString = self.infoDict.object(forKey: "CFBundleShortVersionString") as! String
+        let versionString = infoDict.object(forKey: "CFBundleShortVersionString") as! String
         if versionString.compare(newVersion) == .orderedDescending || versionString.compare(newVersion) == .orderedSame || newVersion == ignoreVersion {
             return false
         } else {

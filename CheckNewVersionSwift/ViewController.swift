@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       self.checkNewVersion()
+        checkNewVersion()
     }
     func checkNewVersion() {
         CheckNewVersion.checkNewWithVersion(appId: "963994756", controller: self)
